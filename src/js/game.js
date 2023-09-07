@@ -101,6 +101,23 @@ export const startGame = () => {
   winCount = 0;
   logoH1.classList.add("logo-sm");
 
+  //
+  
+  function getRandomWord() {
+    const apiURL = "https://random-word-api.vercel.app/api?words=1";
+    fetch(apiURL)
+      .then(response => response.json())
+      .then(data => {
+        WORDS.push(data);
+      })
+      .catch(error => {
+        console.error ('Error', error);
+        elem.innerHTML = 'An error has occured';
+      });
+}
+getRandomWord();
+  //
+
   const randomIndex = Math.floor(Math.random() * WORDS.length);
   const wordToGuess = WORDS[randomIndex];
   sessionStorage.setItem("word", wordToGuess);
