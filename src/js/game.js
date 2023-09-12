@@ -1,5 +1,24 @@
 import { WORDS, KEYBOARD_LETTERS } from "./consts";
 
+window.onload = function(){
+  function getRandomWord() {
+    const apiURL = "https://random-word-api.vercel.app/api?words=80";
+    fetch(apiURL)
+      .then(response => {
+        return response.text();
+      })
+      .then(data => {
+        const randomWordsArr = data.replace(/[\[\]"]/g, '').split(',');
+        WORDS.push(...randomWordsArr);
+      })
+      .catch(error => {
+        console.error ('Error', error);
+      });
+}
+getRandomWord();
+};
+
+
 const gameDiv = document.getElementById("game");
 const logoH1 = document.getElementById("logo");
 
@@ -95,6 +114,8 @@ const stopGame = (status) => {
   ).innerHTML += `<p> The word was: <span class="result-word">${word}</span></p><button id="play-again" class="button-primary px-5 py-2 mt-5">Play again</button>`;
   document.getElementById("play-again").onclick = startGame;
 };
+
+
 
 export const startGame = () => {
   triesLeft = 10;
