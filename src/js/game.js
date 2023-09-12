@@ -1,5 +1,24 @@
 import { WORDS, KEYBOARD_LETTERS } from "./consts";
 
+window.onload = function(){
+  function getRandomWord() {
+    const apiURL = "https://random-word-api.vercel.app/api?words=80";
+    fetch(apiURL)
+      .then(response => {
+        return response.text();
+      })
+      .then(data => {
+        const randomWordsArr = data.replace(/[\[\]"]/g, '').split(',');
+        WORDS.push(...randomWordsArr);
+      })
+      .catch(error => {
+        console.error ('Error', error);
+      });
+}
+getRandomWord();
+};
+
+
 const gameDiv = document.getElementById("game");
 const logoH1 = document.getElementById("logo");
 
@@ -96,27 +115,12 @@ const stopGame = (status) => {
   document.getElementById("play-again").onclick = startGame;
 };
 
+
+
 export const startGame = () => {
   triesLeft = 10;
   winCount = 0;
   logoH1.classList.add("logo-sm");
-
-  //
-  
-  function getRandomWord() {
-    const apiURL = "https://random-word-api.vercel.app/api?words=1";
-    fetch(apiURL)
-      .then(response => response.json())
-      .then(data => {
-        WORDS.push(data);
-      })
-      .catch(error => {
-        console.error ('Error', error);
-        elem.innerHTML = 'An error has occured';
-      });
-}
-getRandomWord();
-  //
 
   const randomIndex = Math.floor(Math.random() * WORDS.length);
   const wordToGuess = WORDS[randomIndex];
